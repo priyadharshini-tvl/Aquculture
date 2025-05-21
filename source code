@@ -1,0 +1,85 @@
+class FishTank:
+    def __init__(self, tank_id, species, num_fish, temperature, pH):
+        self.tank_id = tank_id
+        self.species = species
+        self.num_fish = num_fish
+        self.temperature = temperature
+        self.pH = pH
+        self.feeding_log = []
+
+    def feed(self, time):
+        self.feeding_log.append(time)
+        print(f"✅ Tank {self.tank_id} ({self.species}) fed at {time}.")
+
+    def update_water_quality(self, new_temp, new_pH):
+        self.temperature = new_temp
+        self.pH = new_pH
+        print(f"🔄 Water quality updated: {new_temp}°C, pH {new_pH}")
+
+    def display_info(self):
+        print(f"\n📋 Tank ID: {self.tank_id}")
+        print(f"Species: {self.species}")
+        print(f"Fish Count: {self.num_fish}")
+        print(f"Water Temperature: {self.temperature}°C")
+        print(f"Water pH: {self.pH}")
+        print("Feeding Times:", ", ".join(self.feeding_log) if self.feeding_log else "None")
+
+
+def display_menu():
+    print("\n=== 🐟 Aquaculture Fish Farm Manager ===")
+    print("1. Add New Tank")
+    print("2. Feed Fish")
+    print("3. Update Water Quality")
+    print("4. View Tank Info")
+    print("5. Exit")
+
+
+def main():
+    tanks = {}
+
+    while True:
+        display_menu()
+        choice = input("Enter your choice (1-5): ")
+
+        if choice == "1":
+            tank_id = input("Enter Tank ID: ")
+            species = input("Enter Fish Species: ")
+            num_fish = int(input("Enter Number of Fish: "))
+            temp = float(input("Enter Water Temperature (°C): "))
+            pH = float(input("Enter Water pH: "))
+            tanks[tank_id] = FishTank(tank_id, species, num_fish, temp, pH)
+            print(f"✅ Tank {tank_id} added.")
+
+        elif choice == "2":
+            tank_id = input("Enter Tank ID to feed: ")
+            if tank_id in tanks:
+                time = input("Enter feeding time (e.g., 08:00 AM): ")
+                tanks[tank_id].feed(time)
+            else:
+                print("⚠️ Tank not found.")
+
+        elif choice == "3":
+            tank_id = input("Enter Tank ID to update: ")
+            if tank_id in tanks:
+                temp = float(input("Enter new water temperature (°C): "))
+                pH = float(input("Enter new water pH: "))
+                tanks[tank_id].update_water_quality(temp, pH)
+            else:
+                print("⚠️ Tank not found.")
+
+        elif choice == "4":
+            tank_id = input("Enter Tank ID to view: ")
+            if tank_id in tanks:
+                tanks[tank_id].display_info()
+            else:
+                print("⚠️ Tank not found.")
+
+        elif choice == "5":
+            print("👋 Exiting Fish Farm Manager. Goodbye!")
+            break
+
+        else:
+            print("❌ Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
